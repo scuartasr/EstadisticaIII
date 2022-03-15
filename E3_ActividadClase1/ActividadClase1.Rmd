@@ -1,0 +1,67 @@
+---
+title: "Actividad, clase uno"
+author: "Simón Cuartas Rendón"
+date: 'Marzo de 2022'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Renovación de la memoria
+rm(list = ls())
+
+# Lectura de paquetes
+```
+
+```{r}
+# Lectura de la base de datos
+chocolate = read.csv("cbe2.csv", header = TRUE, sep = ";", dec = ",",
+                     skip = 2, colClasses = c("numeric", rep("NULL", 2)))
+```
+
+```{r}
+choc = ts(chocolate,
+          freq = 12,
+          start = c(1958, 1))
+class(choc)
+```
+
+# Punto 3. Literal A.
+
+A continuación se muestra el gráfico de la serie temporal de la productividad de la industria de chocolate en Australia desde enero de 1958.
+
+```{r}
+plot(choc)
+```
+
+Y enseguida se evidencia la serie en escala logarítmica.
+
+```{r}
+plot(log(choc))
+```
+
+Así pues, vale la pena verificar que en la gráfica que no realiza modificaciones a la producción de chocolate se tiene que la variabilidad va aumentando conforme avanza el tiempo, lo cual no da pie para pensar que esta serie es aditiva. Sin embargo, al observar la serie de tiempo con modificación en la escala de producción haciendo de esta logarítmica se observa que esta es aproximadamente constante en la mayor parte de la serie (hasta 1985 aproximadamente).
+
+# Punto 3. Literal B.
+
+En ambas gráficas anteriores se puede observar un patrón estacional a lo largo del año. Cabe destacar entonces que hay un mínimo anual al comienzo del año (en verano) y máximo a mediados de año, en invierno. Sin embargo, hay que destacar que en los primeros años registrados solo se presentan uno a tres máximos a lo largo del año, mientras que hacia mediados de la década de los setentas comienzan a ocurrir varios máximos por año.
+
+# Punto 3. Literal C.
+
+```{r}
+boxplot(log(choc)~cycle(log(choc)),names=month.abb)
+```
+
+En este gráfico se evidencia lo mencionado previamente y es que ocurre un mínimo al comienzo del año, en el mes de enero y que luego de ello crece rápidamente para luego estancarse en un máximo en los meses invernales para luego volver a decrecer en el último trimestre del año.
+
+# Punto 3. Literal D.
+
+Como se mencionó previamente, la componente estacional va cambiando año a año, lo cual se refleja en el bajo número de picos anuales que se presentan al comienzo de la serie en comparación con los últimos años registrados de esta.
+
+# Punto 4. Literal E.
+
+La serie es decreciente y parece haber pertubación por componente cíclica en la parte final de la serie.
+ 
